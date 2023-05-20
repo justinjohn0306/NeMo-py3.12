@@ -72,7 +72,8 @@ class ModelPT(LightningModule, Model):
     Interface for Pytorch-lightning based NeMo models
     """
 
-    def __init__(self, cfg: DictConfig, trainer: Trainer = None):
+    def __init__(self, cfg: DictConfig, trainer: Trainer =
+    Trainer(accelerator="gpu", devices=1)): # hack
         """
         Base class from which all NeMo models should inherit
 
