@@ -20,7 +20,7 @@ from typing import Any, Dict, Optional
 import torch
 from hydra.utils import instantiate
 from omegaconf import MISSING, DictConfig, OmegaConf, open_dict
-from pytorch_lightning.loggers import LoggerCollection, TensorBoardLogger
+from pytorch_lightning.loggers import TensorBoardLogger
 
 from nemo.collections.common.parts.preprocessing import parsers
 from nemo.collections.tts.helpers.helpers import plot_spectrogram_to_numpy
@@ -153,11 +153,10 @@ class FastSpeech2Model(SpectrogramGenerator):
     def training_epoch_end(self, training_step_outputs):
         if self.log_train_images and self.logger is not None and self.logger.experiment is not None:
             tb_logger = self.logger.experiment
-            if isinstance(self.logger, LoggerCollection):
-                for logger in self.logger:
-                    if isinstance(logger, TensorBoardLogger):
-                        tb_logger = logger.experiment
-                        break
+            for logger in self.loggers:
+                if isinstance(logger, TensorBoardLogger):
+                    tb_logger = logger.experiment
+                    break
             spec_target, spec_predict = training_step_outputs[0]["outputs"]
             tb_logger.add_image(
                 "train_mel_target",

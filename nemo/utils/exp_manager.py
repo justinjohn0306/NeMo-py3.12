@@ -517,24 +517,6 @@ def get_git_diff():
         return "{}\n".format(err.output.decode("utf-8"))
 
 
-class LoggerList(_LoggerCollection):
-    """ A thin wrapper on Lightning's LoggerCollection such that name and version are better aligned with exp_manager
-    """
-
-    def __init__(self, _logger_iterable, nemo_name=None, nemo_version=""):
-        super().__init__(_logger_iterable)
-        self._nemo_name = nemo_name
-        self._nemo_version = nemo_version
-
-    @property
-    def name(self) -> str:
-        return self._nemo_name
-
-    @property
-    def version(self) -> str:
-        return self._nemo_version
-
-
 def configure_loggers(
     trainer: 'pytorch_lightning.Trainer',
     exp_dir: [Path, str],
@@ -572,9 +554,6 @@ def configure_loggers(
         logger_list.append(wandb_logger)
         logging.info("WandBLogger has been set up")
 
-    logger_list = (
-        LoggerList(logger_list, nemo_name=name, nemo_version=version) if len(logger_list) > 1 else logger_list[0]
-    )
     trainer.logger_connector.configure_logger(logger_list)
 
 

@@ -20,7 +20,7 @@ import torch.utils.data
 from hydra.utils import instantiate
 from omegaconf import MISSING, DictConfig, OmegaConf
 from pytorch_lightning import Trainer
-from pytorch_lightning.loggers import LoggerCollection, TensorBoardLogger
+from pytorch_lightning.loggers import TensorBoardLogger
 
 from nemo.collections.asr.data.audio_to_text import _AudioTextDataset
 from nemo.collections.asr.parts.preprocessing.perturb import process_augmentations
@@ -173,11 +173,10 @@ class GlowTTSModel(SpectrogramGenerator):
         }
         if self.logger is not None and self.logger.experiment is not None:
             tb_logger = self.logger.experiment
-            if isinstance(self.logger, LoggerCollection):
-                for logger in self.logger:
-                    if isinstance(logger, TensorBoardLogger):
-                        tb_logger = logger.experiment
-                        break
+            for logger in self.loggers:
+                if isinstance(logger, TensorBoardLogger):
+                    tb_logger = logger.experiment
+                    break
             separated_phonemes = "|".join([self.parser.symbols[c] for c in outputs[0]['x'][0]])
             tb_logger.add_text("separated phonemes", separated_phonemes, self.global_step)
             tb_logger.add_image(
