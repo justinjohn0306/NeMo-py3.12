@@ -34,7 +34,7 @@ from nemo.core.neural_types import MelSpectrogramType, NeuralType
 class TalkNetDursModel(ModelPT):
     """TalkNet's durations prediction pipeline."""
 
-    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = None):
+    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = Trainer()):
         super().__init__(cfg=cfg, trainer=trainer)
         typecheck.set_typecheck_enabled(enabled=False)
 
@@ -132,7 +132,7 @@ class TalkNetDursModel(ModelPT):
 class TalkNetPitchModel(ModelPT):
     """TalkNet's pitch prediction pipeline."""
 
-    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = None):
+    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = Trainer()):
         super().__init__(cfg=cfg, trainer=trainer)
         typecheck.set_typecheck_enabled(enabled=False)
 
@@ -242,7 +242,7 @@ class TalkNetSpectModel(SpectrogramGenerator, Exportable):
     def output_types(self):
         return OrderedDict({"mel-spectrogram": NeuralType(('B', 'D', 'T'), MelSpectrogramType())})
 
-    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = None):
+    def __init__(self, cfg: DictConfig, trainer: 'Trainer' = Trainer()):
         super().__init__(cfg=cfg, trainer=trainer)
         typecheck.set_typecheck_enabled(enabled=False)
 
