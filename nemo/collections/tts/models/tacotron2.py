@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 import torch
@@ -47,7 +47,7 @@ class Preprocessor:
 
 @dataclass
 class Tacotron2Config:
-    preprocessor: Preprocessor = Preprocessor()
+    preprocessor: Preprocessor = field(default_factory=Preprocessor)
     encoder: Dict[Any, Any] = MISSING
     decoder: Dict[Any, Any] = MISSING
     postnet: Dict[Any, Any] = MISSING
