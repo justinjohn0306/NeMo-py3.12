@@ -17,7 +17,7 @@ import subprocess
 import sys
 import time
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from shutil import copy, move
 from typing import Any, Dict, List, Optional, Union
@@ -93,7 +93,7 @@ class ExpManagerConfig:
     wandb_logger_kwargs: Optional[Dict[Any, Any]] = None
     # Checkpointing parameters
     create_checkpoint_callback: Optional[bool] = True
-    checkpoint_callback_params: Optional[CallbackParams] = CallbackParams()
+    checkpoint_callback_params: CallbackParams = field(default_factory=CallbackParams)
     # Additional exp_manager arguments
     files_to_copy: Optional[List[str]] = None
 
