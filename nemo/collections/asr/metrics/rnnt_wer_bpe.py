@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 import editdistance
@@ -236,7 +236,7 @@ class RNNTBPEDecodingConfig:
     compute_hypothesis_token_set: bool = False
 
     # greedy decoding config
-    greedy: greedy_decode.GreedyRNNTInferConfig = greedy_decode.GreedyRNNTInferConfig()
+    greedy: greedy_decode.GreedyRNNTInferConfig = field(default_factory=greedy_decode.GreedyRNNTInferConfig)
 
     # beam decoding config
-    beam: beam_decode.BeamRNNTInferConfig = beam_decode.BeamRNNTInferConfig(beam_size=4)
+    beam: beam_decode.BeamRNNTInferConfig = field(default_factory=lambda: beam_decode.BeamRNNTInferConfig(beam_size=4))
